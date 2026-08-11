@@ -7,16 +7,15 @@
     <style>
         *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
         body{
-            /* ✏️【全局背景图设置】替换此处图片文件名，放在和index.html同级目录 */
-            background: url("./bg_wallpaper.png") no-repeat center center;
+            /* ✏️全局背景图 存放至 img 文件夹 */
+            background: url("./img/bg_wallpaper.png") no-repeat center center;
             background-size: cover;
-            background‑attachment: fixed;/* 滚动页面背景固定不动 */
+            background‑attachment: fixed;
             color:#222;
             max-width:1400px;
             margin:0 auto;
             padding:20px;
         }
-        /* 整体半透明遮罩，防止背景图过花哨看不清文字，可修改rgba第四个数值透明度 0~1 */
         body::before{
             content:"";
             position:fixed;
@@ -26,7 +25,7 @@
         }
         .container{display:flex;gap:30px;}
 
-        /* ==========【左侧个人信息栏】========== */
+        /* ==========左侧侧边栏样式========== */
         .sidebar{
             width:320px;
             flex-shrink:0;
@@ -40,14 +39,13 @@
         }
         .avatar{
             width:140px;height:140px;border-radius:50%;object-fit:cover;
-            /* ✏️【1 修改头像图片】把src的值替换成你的图片路径 */
             margin:0 auto 16px;display:block;
         }
         .nickname{text-align:center;font-size:22px;font-weight:bold;margin-bottom:8px;}
         .qq-info{text-align:center;color:#555;margin-bottom:12px;}
         .bio{color:#444;line-height:1.7;font-size:15px;margin-bottom:28px;}
 
-        /* ✏️【侧边栏QQ音乐动效唱片样式】 */
+        /* 旋转唱片音乐模块 */
         .music-block{
             margin-top:20px;
             padding-top:20px;
@@ -65,14 +63,11 @@
             height:100%;
             border-radius:50%;
             object-fit:cover;
-            /* 唱片旋转动画 */
             animation: rotateDisc 8s linear infinite;
         }
-        /* 鼠标悬浮暂停转动 */
         .disc-box:hover .disc-img{
             animation-play-state:paused;
         }
-        /* 唱片中心小圆点 */
         .disc-center{
             position:absolute;
             width:24px;
@@ -83,7 +78,6 @@
             top:50%;
             transform:translate(-50%,‑50%);
         }
-        /* 唱片旋转关键帧动画，数值越大转得越慢 */
         @keyframes rotateDisc {
             from{transform:rotate(0deg)}
             to{transform:rotate(360deg)}
@@ -95,14 +89,12 @@
             color:#666;
         }
 
-        /* ==========【右侧主内容区】========== */
+        /* ==========右侧主内容区========== */
         .main{flex:1;}
-        /* 外层大标签：生活笔记 / 学习笔记 / 照片图库 */
         .tab-btn-group{display:flex;gap:10px;margin-bottom:24px;}
         .tab-btn{padding:10px 22px;border:none;background:#ddd;border-radius:6px;cursor:pointer;font-size:16px;}
         .tab-btn.active{background:#2563eb;color:white;}
 
-        /* 照片图库内部二级分类按钮 */
         .photo-sub-tab{display:flex;gap:8px;margin-bottom:20px;}
         .photo-sub-tab button{
             padding:6px 16px;border:none;background:#e6e8ec;border-radius:4px;cursor:pointer;
@@ -114,7 +106,6 @@
         .photo-sub-content{display:none;}
         .photo-sub-content.show{display:grid;}
 
-        /* 笔记卡片通用样式 */
         .note-card{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #eee;}
         .note-title{font-size:20px;margin-bottom:12px;}
         .note-text{line-height:1.8;margin-bottom:14px;font-size:15px;color:#333;}
@@ -122,7 +113,6 @@
         table{border-collapse:collapse;width:100%;margin:12px 0;}
         table td,table th{border:1px solid #ccc;padding:10px;}
 
-        /* 照片图库网格布局 */
         .photo-gallery{
             display:grid;
             grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
@@ -133,12 +123,9 @@
 </head>
 <body>
 <div class="container">
-    <!-- =============================================
-                    📌【左侧个人信息区域】
-        ✏️ 修改头像、昵称、QQ、自我介绍全部在这里改
-    ============================================== -->
     <div class="sidebar">
-        <img class="avatar" src="./avatar.png" alt="头像">
+        <!-- ✏️侧边个人头像 -->
+        <img class="avatar" src="./img/avatar.png" alt="头像">
         <div class="nickname">你的昵称</div>
         <div class="qq-info">QQ：123456789</div>
         <div class="bio">
@@ -146,10 +133,10 @@
             可以写爱好、学习方向，游戏特效学习记录，日常感悟。
         </div>
 
-        <!-- ✏️左侧底部旋转唱片QQ音乐模块 -->
+        <!-- ✏️QQ音乐唱片封面 -->
         <div class="music-block">
             <div class="disc-box">
-                <img class="disc-img" src="./music_cover.png" alt="音乐封面">
+                <img class="disc-img" src="./img/music_cover.png" alt="音乐封面">
                 <div class="disc-center"></div>
                 <a href="https://y.qq.com/填入你的歌曲链接" target="_blank" style="position:absolute;inset:0;"></a>
             </div>
@@ -157,36 +144,35 @@
         </div>
     </div>
 
-    <!-- ===================== 📌右侧主内容区 ===================== -->
     <div class="main">
-        <!-- 一级标签：生活笔记｜学习笔记｜照片图库 -->
         <div class="tab-btn-group">
             <button class="tab-btn active" data-tab="life">生活笔记</button>
             <button class="tab-btn" data-tab="study">学习笔记</button>
             <button class="tab-btn" data-tab="photos">照片图库</button>
         </div>
 
-        <!-- ✏️生活笔记板块 -->
+        <!-- 生活笔记板块 -->
         <div class="tab-page show" id="life">
             <div class="note-card">
                 <h3 class="note-title">生活笔记标题：周末外出记录</h3>
                 <div class="note-text">
                     这里写笔记正文文字，记录生活琐事、感想。
                 </div>
-                <img class="note-img" src="./me757649.png" alt="生活配图">
+                <!-- ✏️生活笔记配图 -->
+                <img class="note-img" src="./img/life/me757649.png" alt="生活配图">
             </div>
         </div>
 
-        <!-- ✏️学习笔记板块（支持多图+表格） -->
+        <!-- 学习笔记板块 -->
         <div class="tab-page" id="study">
             <div class="note-card">
                 <h3 class="note-title">学习笔记标题：UE Niagara学习记录</h3>
                 <div class="note-text">
                     这里写学习笔记正文，记录引擎知识点、踩坑总结。
                 </div>
-                <img class="note-img" src="./study1.png" alt="学习截图1">
+                <img class="note-img" src="./img/study/study1.png" alt="学习截图1">
                 <div class="note-text">中间补充文字说明</div>
-                <img class="note-img" src="./study2.png" alt="学习截图2">
+                <img class="note-img" src="./img/study/study2.png" alt="学习截图2">
 
                 <table>
                     <tr>
@@ -205,12 +191,8 @@
             </div>
         </div>
 
-        <!-- =====================================================
-            ✏️照片图库：内设四类 旅游｜绘画｜学校｜生活
-            新增图片：在对应 photo‑gallery 里复制 <img> 即可
-        ====================================================== -->
+        <!-- 四大分类相册 -->
         <div class="tab-page" id="photos">
-            <!-- 二级分类按钮 -->
             <div class="photo-sub-tab">
                 <button class="active" data-sub="travel">旅游</button>
                 <button data-sub="draw">绘画</button>
@@ -218,36 +200,32 @@
                 <button data-sub="lifePic">生活随拍</button>
             </div>
 
-            <!-- 1.旅游相册 -->
+            <!-- 旅游相册 -->
             <div class="photo-sub-content show photo-gallery" data-sub="travel">
-                <img src="./travel_01.png" alt="出游照片">
-                <img src="./travel_02.png" alt="出游照片">
-                <!-- 继续复制 img 新增旅游照片 -->
+                <img src="./img/photos/travel/travel_01.png" alt="出游照片">
+                <img src="./img/photos/travel/travel_02.png" alt="出游照片">
             </div>
-
-            <!-- 2.绘画作品相册 -->
+            <!-- 绘画相册 -->
             <div class="photo-sub-content photo-gallery" data-sub="draw">
-                <img src="./draw_01.png" alt="手绘作品">
-                <img src="./draw_02.png" alt="手绘作品">
+                <img src="./img/photos/draw/draw_01.png" alt="手绘作品">
+                <img src="./img/photos/draw/draw_02.png" alt="手绘作品">
             </div>
-
-            <!-- 3.校园相册 -->
+            <!-- 校园相册 -->
             <div class="photo-sub-content photo-gallery" data-sub="school">
-                <img src="./school_01.png" alt="校园实拍">
-                <img src="./school_02.png" alt="校园实拍">
+                <img src="./img/photos/school/school_01.png" alt="校园实拍">
+                <img src="./img/photos/school/school_02.png" alt="校园实拍">
             </div>
-
-            <!-- 4.日常随拍相册 -->
+            <!-- 生活随拍相册 -->
             <div class="photo-sub-content photo-gallery" data-sub="lifePic">
-                <img src="./life_photo01.png" alt="生活照片">
-                <img src="./life_photo02.png" alt="生活照片">
+                <img src="./img/photos/lifePic/life_photo01.png" alt="生活照片">
+                <img src="./img/photos/lifePic/life_photo02.png" alt="生活照片">
             </div>
         </div>
     </div>
 </div>
 
 <script>
-// 一级标签切换：生活笔记/学习笔记/照片图库
+// 一级标签切换
 const mainBtns = document.querySelectorAll('.tab-btn');
 const mainPages = document.querySelectorAll('.tab-page');
 mainBtns.forEach(btn=>{
@@ -260,7 +238,7 @@ mainBtns.forEach(btn=>{
     }
 })
 
-// 照片图库二级分类切换：旅游/绘画/学校/生活
+// 相册二级分类切换
 const subBtns = document.querySelectorAll('.photo-sub-tab button');
 const subGallery = document.querySelectorAll('.photo-sub-content');
 subBtns.forEach(btn=>{
