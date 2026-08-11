@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人笔记博客</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
+        body{background:#f3f4f6;color:#222;max-width:1400px;margin:0 auto;padding:20px;}
+        .container{display:flex;gap:30px;}
+
+        /* ==========【左侧个人信息栏】========== */
+        .sidebar{width:320px;flex-shrink:0;background:#ffffff;padding:24px;border-radius:12px;box-shadow:0 2px 12px #00000018;height:fit-content;position:sticky;top:20px;}
+        .avatar{
+            width:140px;height:140px;border-radius:50%;object-fit:cover;
+            /* ✏️【1 修改头像图片】把src的值替换成你的图片路径 */
+            margin:0 auto 16px;display:block;
+        }
+        .nickname{text-align:center;font-size:22px;font-weight:bold;margin-bottom:8px;}
+        .qq-info{text-align:center;color:#555;margin-bottom:12px;}
+        .bio{color:#444;line-height:1.7;font-size:15px;}
+
+        /* ==========【右侧主内容区】========== */
+        .main{flex:1;}
+        .tab-btn-group{display:flex;gap:10px;margin-bottom:24px;}
+        .tab-btn{padding:10px 22px;border:none;background:#ddd;border-radius:6px;cursor:pointer;font-size:16px;}
+        .tab-btn.active{background:#2563eb;color:white;}
+        .tab-page{display:none;background:#fff;padding:24px;border-radius:12px;box-shadow:0 2px 12px #00000018;}
+        .tab-page.show{display:block;}
+
+        /* 笔记卡片通用样式 */
+        .note-card{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #eee;}
+        .note-title{font-size:20px;margin-bottom:12px;}
+        .note-text{line-height:1.8;margin-bottom:14px;font-size:15px;color:#333;}
+        .note-img{max-width:100%;max-height:500px;border-radius:6px;margin:8px 0;}
+        table{border-collapse:collapse;width:100%;margin:12px 0;}
+        table td,table th{border:1px solid #ccc;padding:10px;}
+
+        /* 照片图库布局 */
+        .photo-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+        .photo-gallery img{width:100%;border-radius:8px;object-fit:cover;height:200px;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- =============================================
+                    📌【左侧个人信息区域】
+        ✏️ 修改头像、昵称、QQ、自我介绍全部在这里改
+    ============================================== -->
+    <div class="sidebar">
+        <!-- 1.替换头像：修改下面 src="" 里面的图片地址 -->
+        <img class="avatar" src="./avatar.png" alt="头像">
+        <div class="nickname">YinXiangs</div>
+        <div class="qq-info">QQ：2164933041</div>
+        <div class="bio">
+            这里写你的自我介绍小段文字。
+            可以写爱好、学习方向，游戏特效学习记录，日常感悟。
+        </div>
+    </div>
+
+    <!-- ===================== 📌右侧主内容区 ===================== -->
+    <div class="main">
+        <!-- 切换标签按钮：生活笔记｜学习笔记｜照片 -->
+        <div class="tab-btn-group">
+            <button class="tab-btn active" data-tab="life">生活笔记</button>
+            <button class="tab-btn" data-tab="study">学习笔记</button>
+            <button class="tab-btn" data-tab="photos">照片图库</button>
+        </div>
+
+
+        <!-- =====================================================
+                    ✏️【生活笔记页面】 图片 + 文章
+            新增一篇生活笔记：复制一整块 note-card 粘贴下面
+            修改：note-title标题、note-text文字、img的src图片
+        ====================================================== -->
+        <div class="tab-page show" id="life">
+            <!-- 第一篇生活笔记 示例 -->
+            <div class="note-card">
+                <h3 class="note-title">生活笔记标题：周末外出记录</h3>
+                <div class="note-text">
+                    这里写笔记正文文字，记录生活琐事、感想。
+                    可以写很多行文字，换行直接在这里写。
+                </div>
+                <!-- 修改图片：修改src="./life1.png"，换成你的图片文件名 -->
+                <img class="note-img" src="./life1.png" alt="生活配图">
+            </div>
+
+            <!-- 复制上面整块note-card，就可以新增更多生活笔记 -->
+
+        </div>
+
+
+        <!-- =====================================================
+                ✏️【学习笔记页面】支持：多个图片、文字、表格
+            新增学习笔记：复制 note-card 整块
+            可以放多张img标签，可以复制table表格
+        ====================================================== -->
+        <div class="tab-page" id="study">
+            <div class="note-card">
+                <h3 class="note-title">学习笔记标题：UE Niagara学习记录</h3>
+                <div class="note-text">
+                    这里写学习笔记正文，记录引擎知识点、踩坑总结。
+                </div>
+                <!-- 第一张学习图片 -->
+                <img class="note-img" src="./study1.png" alt="学习截图1">
+                <div class="note-text">中间补充文字说明</div>
+                <!-- 第二张学习图片，直接多加一行img标签就实现多图 -->
+                <img class="note-img" src="./study2.png" alt="学习截图2">
+
+                <!-- ========== 表格示例（类似word表格）==========
+                     直接复制整个table标签，就新增表格
+                -->
+                <table>
+                    <tr>
+                        <th>知识点</th>
+                        <th>掌握程度</th>
+                    </tr>
+                    <tr>
+                        <td>Niagara粒子生成</td>
+                        <td>熟练</td>
+                    </tr>
+                    <tr>
+                        <td>HLSL材质</td>
+                        <td>练习中</td>
+                    </tr>
+                </table>
+            </div>
+            <!-- 复制上面整块note-card，新增第二篇学习笔记 -->
+        </div>
+
+
+        <!-- =====================================================
+                ✏️【照片图库页面】只放图片
+            添加照片：复制一行 <img src="xxx.png">
+        ====================================================== -->
+        <div class="tab-page" id="photos">
+            <div class="photo-gallery">
+                <img src="./photo1.png" alt="照片">
+                <img src="./photo2.png" alt="照片">
+                <img src="./photo3.png" alt="照片">
+                <!-- 复制上面img标签，就新增更多照片 -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+// 标签切换逻辑，不用修改
+const btns = document.querySelectorAll('.tab-btn');
+const pages = document.querySelectorAll('.tab-page');
+btns.forEach(btn=>{
+    btn.onclick = function(){
+        const tabId = this.dataset.tab;
+        btns.forEach(b=>b.classList.remove('active'));
+        pages.forEach(p=>p.classList.remove('show'));
+        this.classList.add('active');
+        document.getElementById(tabId).classList.add('show');
+    }
+})
+</script>
+</body>
+</html>
