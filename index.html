@@ -3,253 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的个人笔记博客</title>
+    <title>望白守黑｜个人技术随笔博客</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft Yahei",sans-serif;}
-        body{
-            /* ✏️全局背景图 存放至 img 文件夹 */
-            background: url("./img/bg_wallpaper.png") no-repeat center center;
-            background-size: cover;
-            background‑attachment: fixed;
-            color:#222;
-            max-width:1400px;
-            margin:0 auto;
-            padding:20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        body::before{
-            content:"";
-            position:fixed;
-            inset:0;
-            background:rgba(255,255,255,0.72);
-            z-index:-1;
-        }
-        .container{display:flex;gap:30px;}
-
-        /* ==========左侧侧边栏样式========== */
-        .sidebar{
-            width:320px;
-            flex-shrink:0;
-            background:#ffffff;
-            padding:24px;
-            border-radius:12px;
-            box-shadow:0 2px 12px #00000018;
-            height:fit-content;
-            position:sticky;
-            top:20px;
-        }
-        .avatar{
-            width:140px;height:140px;border-radius:50%;object-fit:cover;
-            margin:0 auto 16px;display:block;
-        }
-        .nickname{text-align:center;font-size:22px;font-weight:bold;margin-bottom:8px;}
-        .qq-info{text-align:center;color:#555;margin-bottom:12px;}
-        .bio{color:#444;line-height:1.7;font-size:15px;margin-bottom:28px;}
-
-        /* 旋转唱片音乐模块 */
-        .music-block{
-            margin-top:20px;
-            padding-top:20px;
-            border-top:1px solid #eee;
-        }
-        .disc-box{
-            width:180px;
-            height:180px;
-            margin:0 auto;
-            position:relative;
-            cursor:pointer;
-        }
-        .disc-img{
-            width:100%;
-            height:100%;
-            border-radius:50%;
-            object-fit:cover;
-            animation: rotateDisc 8s linear infinite;
-        }
-        .disc-box:hover .disc-img{
-            animation-play-state:paused;
-        }
-        .disc-center{
-            position:absolute;
-            width:24px;
-            height:24px;
-            background:#333;
-            border-radius:50%;
-            left:50%;
-            top:50%;
-            transform:translate(-50%,‑50%);
-        }
-        @keyframes rotateDisc {
-            from{transform:rotate(0deg)}
-            to{transform:rotate(360deg)}
-        }
-        .music-tips{
-            text-align:center;
-            margin-top:12px;
-            font-size:14px;
-            color:#666;
+        body {
+            background: #0f0f0f;
+            color: #f0f0f0;
+            font-family: system-ui, sans-serif;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 42px 30px;
+            line-height: 1.75;
         }
 
-        /* ==========右侧主内容区========== */
-        .main{flex:1;}
-        .tab-btn-group{display:flex;gap:10px;margin-bottom:24px;}
-        .tab-btn{padding:10px 22px;border:none;background:#ddd;border-radius:6px;cursor:pointer;font-size:16px;}
-        .tab-btn.active{background:#2563eb;color:white;}
-
-        .photo-sub-tab{display:flex;gap:8px;margin-bottom:20px;}
-        .photo-sub-tab button{
-            padding:6px 16px;border:none;background:#e6e8ec;border-radius:4px;cursor:pointer;
+        /* 侧边个人信息区域 可修改昵称、头像、简介 */
+        .blog-sidebar {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 48px;
+            margin-bottom: 50px;
         }
-        .photo-sub-tab button.active{background:#2563eb;color:#fff;}
-
-        .tab-page{display:none;background:#fff;padding:24px;border-radius:12px;box-shadow:0 2px 12px #00000018;}
-        .tab-page.show{display:block;}
-        .photo-sub-content{display:none;}
-        .photo-sub-content.show{display:grid;}
-
-        .note-card{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #eee;}
-        .note-title{font-size:20px;margin-bottom:12px;}
-        .note-text{line-height:1.8;margin-bottom:14px;font-size:15px;color:#333;}
-        .note-img{max-width:100%;max-height:500px;border-radius:6px;margin:8px 0;}
-        table{border-collapse:collapse;width:100%;margin:12px 0;}
-        table td,table th{border:1px solid #ccc;padding:10px;}
-
-        .photo-gallery{
-            display:grid;
-            grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-            gap:14px;
+        .author-card {
+            text-align: center;
         }
-        .photo-gallery img{width:100%;border-radius:8px;object-fit:cover;height:200px;}
+        .author-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #222;
+            margin: 0 auto 16px;
+            overflow: hidden;
+        }
+        .author-name {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .author-contact {
+            color: #aaa;
+            margin-bottom: 18px;
+        }
+        .author-desc {
+            color: #bbbbbb;
+            text-align: left;
+            padding: 0 10px;
+        }
+        .music-disc {
+            margin-top: 32px;
+            cursor: pointer;
+        }
+        .music-tips {
+            font-size: 13px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        /* 顶部主导航：生活笔记 / 学习笔记 / 照片图库 */
+        .main-nav {
+            margin: 40px 0 28px;
+        }
+        .main-nav button {
+            padding: 10px 20px;
+            background: #272727;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            margin: 0 6px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        .main-nav button.active {
+            background: #2563eb;
+        }
+
+        /* 三大主内容面板 显示隐藏控制 */
+        .main-content-panel {
+            display: none;
+        }
+        .main-content-panel.show {
+            display: block;
+        }
+
+        /* 文章卡片通用样式 生活笔记、学习笔记共用 */
+        .article-card {
+            background: #1a1a1a;
+            padding: 26px;
+            border-radius: 10px;
+            margin-bottom: 22px;
+        }
+        .article-card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #e8e8e8;
+        }
+        .article-time {
+            font-size: 13px;
+            color: #777;
+            margin-bottom: 14px;
+        }
+        .article-text {
+            color: #c2c2c2;
+            margin-bottom: 16px;
+        }
+        /* 学习笔记内嵌图片样式 */
+        .article-img {
+            width: 100%;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+
+        /* 相册二级导航 */
+        .photo-nav {
+            margin-bottom: 22px;
+        }
+        .photo-nav button {
+            padding: 8px 16px;
+            background: #272727;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .photo-nav button.active {
+            background: #2563eb;
+        }
+        .photo-grid {
+            display: none;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .photo-grid.show {
+            display: grid;
+        }
+        .photo-grid img {
+            width: 100%;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="sidebar">
-        <!-- ✏️侧边个人头像 -->
-        <img class="avatar" src="./img/touxiang.jpg" alt="头像">
-        <div class="nickname">望白守黑~</div>
-        <div class="qq-info">QQ：2164933041</div>
-        <div class="bio">
-            这里写你的自我介绍小段文字。
-            可以写爱好、学习方向，游戏特效学习记录，日常感悟。
-        </div>
-
-        <!-- ✏️QQ音乐唱片封面 -->
-        <div class="music-block">
-            <div class="disc-box">
-                <img class="disc-img" src="./img/yyuelo.png" alt="音乐封面">
-                <div class="disc-center"></div>
-                <a href="https://y.qq.com/填入你的歌曲链接" target="_blank" style="position:absolute;inset:0;"></a>
+    <!-- 左侧个人主页信息 已移除下载模块 -->
+    <div class="blog-sidebar">
+        <div class="author-card">
+            <div class="author-avatar">
+                <img src="./img/avatar/touxiang.jpg" style="width:100%;height:100%;object-fit:cover;">
             </div>
-            <div class="music-tips">点击唱片，跳转QQ音乐听歌</div>
-        </div>
-    </div>
-
-    <div class="main">
-        <div class="tab-btn-group">
-            <button class="tab-btn active" data-tab="life">生活笔记</button>
-            <button class="tab-btn" data-tab="study">学习笔记</button>
-            <button class="tab-btn" data-tab="photos">照片图库</button>
-        </div>
-
-        <!-- 生活笔记板块 -->
-        <div class="tab-page show" id="life">
-            <div class="note-card">
-                <h3 class="note-title">生活笔记标题：周末外出记录</h3>
-                <div class="note-text">
-                    这里写笔记正文文字，记录生活琐事、感想。
-                </div>
-                <!-- ✏️生活笔记配图 -->
-                <img class="note-img" src="./img/life/me757649.png" alt="生活配图">
-            </div>
-        </div>
-
-        <!-- 学习笔记板块 -->
-        <div class="tab-page" id="study">
-            <div class="note-card">
-                <h3 class="note-title">学习笔记标题：UE Niagara学习记录</h3>
-                <div class="note-text">
-                    这里写学习笔记正文，记录引擎知识点、踩坑总结。
-                </div>
-                <img class="note-img" src="./img/study/study1.png" alt="学习截图1">
-                <div class="note-text">中间补充文字说明</div>
-                <img class="note-img" src="./img/study/study2.png" alt="学习截图2">
-
-                <table>
-                    <tr>
-                        <th>知识点</th>
-                        <th>掌握程度</th>
-                    </tr>
-                    <tr>
-                        <td>Niagara粒子生成</td>
-                        <td>熟练</td>
-                    </tr>
-                    <tr>
-                        <td>HLSL材质</td>
-                        <td>练习中</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <!-- 四大分类相册 -->
-        <div class="tab-page" id="photos">
-            <div class="photo-sub-tab">
-                <button class="active" data-sub="travel">旅游</button>
-                <button data-sub="draw">绘画</button>
-                <button data-sub="school">学校</button>
-                <button data-sub="lifePic">生活随拍</button>
-            </div>
-
-            <!-- 旅游相册 -->
-            <div class="photo-sub-content show photo-gallery" data-sub="travel">
-                <img src="./img/photos/travel/travel_01.jpg" alt="出游照片">
-                <img src="./img/photos/travel/travel_02.jpg" alt="出游照片">
-            </div>
-            <!-- 绘画相册 -->
-            <div class="photo-sub-content photo-gallery" data-sub="draw">
-                <img src="./img/photos/draw/draw_01.jpg" alt="手绘作品">
-                <img src="./img/photos/draw/draw_02.jpg" alt="手绘作品">
-            </div>
-            <!-- 校园相册 -->
-            <div class="photo-sub-content photo-gallery" data-sub="school">
-                <img src="./img/photos/school/school_01.jpg" alt="校园实拍">
-                <img src="./img/photos/school/school_02.jpg" alt="校园实拍">
-            </div>
-            <!-- 生活随拍相册 -->
-            <div class="photo-sub-content photo-gallery" data-sub="lifePic">
-                <img src="./img/photos/lifePic/life_photo01.jpg" alt="生活照片">
-                <img src="./img/photos/lifePic/life_photo02.jpg" alt="生活照片">
+            <h1 class="author-name">望白守黑~</h1>
+            <div class="author-contact">QQ: 2164933041</div>
+            <p class="author-desc">
+                专注UE游戏特效、HLSL着色器学习，日常记录技术心得与生活随笔，沉淀个人成长履历，同步整理实战踩坑笔记。
+            </p>
+            <div class="music-disc">
+                <img src="./img/yyuelo.png" style="width:50px;height:50px;border-radius:50px;object-fit:cover;margin:0 auto;display:block;cursor:pointer;">
+                <p class="music-tips">点击唱片跳转QQ音乐</p>
             </div>
         </div>
     </div>
-</div>
+
+    <!-- 一级主导航 -->
+    <div class="main-nav">
+        <button class="nav-btn active" data-target="lifeNote">生活笔记</button>
+        <button class="nav-btn" data-target="studyNote">学习笔记</button>
+        <button class="nav-btn" data-target="photoGallery">照片图库</button>
+    </div>
+
+    <!-- 板块1：生活随笔（纯文字） -->
+    <div class="main-content-panel show" id="lifeNote">
+        <div class="article-card">
+            <h2>日常随笔 · 第一篇</h2>
+            <div class="article-time">2026‑08‑10</div>
+            <div class="article-text">
+                记录平日里的生活感悟，闲暇规划学习节奏，调整心态减少精神内耗，梳理每日计划，平衡学业、引擎技术学习与个人作息。
+            </div>
+        </div>
+        <div class="article-card">
+            <h2>日常随笔 · 第二篇</h2>
+            <div class="article-time">2026‑08‑11</div>
+            <div class="article-text">
+                复盘GitHub博客搭建踩坑，文件夹创建、图片上传、网页路径报错，页面切换异常问题存档。
+            </div>
+        </div>
+    </div>
+
+    <!-- 板块2：学习笔记 支持图文混排 -->
+    <div class="main-content-panel" id="studyNote">
+        <div class="article-card">
+            <h2>UE5特效学习笔记｜Niagara水珠HLSL材质</h2>
+            <div class="article-time">2026‑08‑10</div>
+            <div class="article-text">
+                梳理Niagara粒子系统、自定义HLSL材质写法，对比UE4与UE5语法差异，Custom节点循环if分支，玻璃窗雨水着色器算法。
+            </div>
+            <img class="article-img" src="./img/study/ue_rain_shader.jpg">
+            <div class="article-text">
+                上图为玻璃雨水材质效果截图，UV偏移扰动模拟水珠向下流淌。
+            </div>
+        </div>
+        <div class="article-card">
+            <h2>Unity VFX Graph学习笔记｜GPU粒子管线</h2>
+            <div class="article-time">2026‑08‑11</div>
+            <div class="article-text">
+                区分CPU旧粒子与GPU粒子管线，Shader Graph与VFX Graph配合思路，整理求职节点清单，对比两大引擎岗位招聘差异。
+            </div>
+            <img class="article-img" src="./img/study/vfx_node_sort.jpg">
+            <div class="article-text">
+                VFX常用节点整理面板，用于复习复盘。
+            </div>
+        </div>
+    </div>
+
+    <!-- 板块3：照片图库 修复按钮点击失效 -->
+    <div class="main-content-panel" id="photoGallery">
+        <div class="photo-nav">
+            <button class="photo-btn active" data-gallery="travelImg">旅游</button>
+            <button class="photo-btn" data-gallery="drawImg">绘画</button>
+            <button class="photo-btn" data-gallery="schoolImg">校园实拍</button>
+            <button class="photo-btn" data-gallery="lifeImg">生活随拍</button>
+        </div>
+
+        <div class="photo-grid show" id="travelImg">
+            <img src="./img/photos/travel/travel_01.jpg">
+            <img src="./img/photos/travel/travel_02.jpg">
+        </div>
+        <div class="photo-grid" id="drawImg">
+            <img src="./img/photos/draw/draw_01.jpg">
+            <img src="./img/photos/draw/draw_02.jpg">
+        </div>
+        <div class="photo-grid" id="schoolImg">
+            <img src="./img/photos/school/school_01.jpg">
+            <img src="./img/photos/school/school_02.jpg">
+        </div>
+        <div class="photo-grid" id="lifeImg">
+            <img src="./img/photos/lifePic/life_01.jpg">
+            <img src="./img/photos/lifePic/life_02.jpg">
+        </div>
+    </div>
 
 <script>
-// 一级标签切换
-const mainBtns = document.querySelectorAll('.tab-btn');
-const mainPages = document.querySelectorAll('.tab-page');
-mainBtns.forEach(btn=>{
-    btn.onclick = function(){
-        const tab = this.dataset.tab;
-        mainBtns.forEach(b=>b.classList.remove('active'));
-        mainPages.forEach(p=>p.classList.remove('show'));
-        this.classList.add('active');
-        document.getElementById(tab).classList.add('show');
-    }
-})
+// 页面全部加载完毕再执行JS，彻底解决点击无响应
+window.onload = function(){
+    // 一级导航：生活笔记、学习笔记、照片图库
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const contentPanels = document.querySelectorAll('.main-content-panel');
+    navBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            navBtns.forEach(item => item.classList.remove('active'));
+            contentPanels.forEach(panel => panel.classList.remove('show'));
+            btn.classList.add('active');
+            const targetId = btn.dataset.target;
+            document.getElementById(targetId).classList.add('show');
+        })
+    })
 
-// 相册二级分类切换
-const subBtns = document.querySelectorAll('.photo-sub-tab button');
-const subGallery = document.querySelectorAll('.photo-sub-content');
-subBtns.forEach(btn=>{
-    btn.onclick = function(){
-        const subKey = this.dataset.sub;
-        subBtns.forEach(b=>b.classList.remove('active'));
-        subGallery.forEach(g=>g.classList.remove('show'));
-        this.classList.add('active');
-        document.querySelector(`.photo-sub-content[data-sub="${subKey}"]`).classList.add('show');
-    }
-})
+    // 相册二级分类切换 修复点不开BUG
+    const photoBtns = document.querySelectorAll('.photo-btn');
+    const photoGrids = document.querySelectorAll('.photo-grid');
+    photoBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            photoBtns.forEach(item => item.classList.remove('active'));
+            photoGrids.forEach(grid => grid.classList.remove('show'));
+            btn.classList.add('active');
+            const galleryId = btn.dataset.gallery;
+            document.getElementById(galleryId).classList.add('show');
+        })
+    })
+}
 </script>
 </body>
 </html>
