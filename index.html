@@ -19,7 +19,6 @@
             padding: 42px 30px;
             line-height: 1.75;
         }
-
         /* 侧边个人信息区域 可修改昵称、头像、简介 */
         .blog-sidebar {
             display: grid;
@@ -78,13 +77,16 @@
      text-align:center;
  }
         /**/
-
         /*学习笔记界面跳转*/
         .note-grid{
   display:grid;
-  grid-template-columns: repeat(auto‑fill, minmax(320px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
   gap:20px;
   padding:16px;
+}
+/* 修复main-content-panel默认display:none覆盖网格布局 */
+.note-grid.main-content-panel.show {
+    display: grid;
 }
 .note-card{
   display:block;
@@ -102,17 +104,17 @@
 }
 .note-card h3{
   margin:20px 20px 8px;
-  font‑size:18px;
+  font-size:18px;
 }
 .note-date{
   color:#aaa;
-  font‑size:14px;
+  font-size:14px;
   margin:0 20px 12px;
 }
 .note-card p{
   margin:0 20px 16px;
   color:#cccccc;
-  line‑height:1.6;
+  line-height:1.6;
 }
 .note-img-wrap{
   width:100%;
@@ -122,10 +124,9 @@
 .note-thumb{
   width:100%;
   height:100%;
-  object‑fit:cover;
+  object-fit:cover;
 }
 /**/
-
         /* 顶部主导航：生活笔记 / 学习笔记 / 照片图库 */
         .main-nav {
             margin: 40px 0 28px;
@@ -143,7 +144,6 @@
         .main-nav button.active {
             background: #2563eb;
         }
-
         /* 三大主内容面板 显示隐藏控制 */
         .main-content-panel {
             display: none;
@@ -151,7 +151,6 @@
         .main-content-panel.show {
             display: block;
         }
-
         /* 文章卡片通用样式 生活笔记 */
         .article-card {
             background: #1a1a1a;
@@ -180,7 +179,6 @@
             margin: 10px 0;
             display:block;
         }
-
         /* 相册二级导航,调整照片排版 */
         .photo-nav {
             margin-bottom: 22px;
@@ -240,14 +238,12 @@
             </div>
         </div>
     </div>
-
     <!-- 一级主导航 -->
     <div class="main-nav">
         <button class="nav-btn active" data-target="lifeNote">生活笔记</button>
         <button class="nav-btn" data-target="studyNote">学习笔记</button>
         <button class="nav-btn" data-target="photoGallery">照片图库</button>
     </div>
-
     <!-- 板块1：生活随笔（纯文字） -->
     <div class="main-content-panel show" id="lifeNote">
         <div class="article-card">
@@ -271,10 +267,8 @@
             </div>
         </div>
     </div>
-
-    <!-- 板块2：学习笔记 支持图文混排 -->
-   <!-- 板块2：学习笔记 网格跳转卡片，保留id用于标签切换 -->
- <div class="note-grid" id="studyNote">
+    <!-- 板块2：学习笔记 网格跳转卡片，增加main-content-panel用于切换隐藏 -->
+ <div class="note-grid main-content-panel" id="studyNote">
      <a href="./note/ue-niagara-basic-operations.html" class="note-card">
          <h2>UE5特效学习笔记｜Niagara水珠HLSL材质</h2>
          <div class="note-time">2025‑12‑11</div>
@@ -299,7 +293,6 @@
      </a>
  </div>
        
-
     <!-- 板块3：照片图库 修复按钮点击失效 -->
     <div class="main-content-panel" id="photoGallery">
         <div class="photo-nav">
@@ -308,7 +301,6 @@
             <button class="photo-btn" data-gallery="schoolImg">校园实拍</button>
             <button class="photo-btn" data-gallery="lifeImg">生活随拍</button>
         </div>
-
         <div class="photo-grid show" id="travelImg">
             <div class="photo-item">
      <img src="./img/photos/travel/travel_01.jpg">
@@ -540,13 +532,11 @@
         <span class="photo-time">2025-11-20</span>
      </div>
  </div>
-
         <div class="photo-grid" id="lifeImg">
             <img src="./img/photos/lifePic/life_photo01.jpg">
             <img src="./img/photos/lifePic/life_photo02.jpg">
         </div>
     </div>
-
 <script>
 // 页面全部加载完毕再执行JS，彻底解决点击无响应
 window.onload = function(){
@@ -562,7 +552,6 @@ window.onload = function(){
             document.getElementById(targetId).classList.add('show');
         })
     })
-
     // 相册二级分类切换 修复点不开BUG
     const photoBtns = document.querySelectorAll('.photo-btn');
     const photoGrids = document.querySelectorAll('.photo-grid');
