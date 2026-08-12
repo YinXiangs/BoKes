@@ -241,13 +241,33 @@
             <p class="author-desc">
                 收藏着生活细碎风物，以随笔与镜头留存世间温柔光景。
             </p>
-            <div class="music-disc">
-    <!-- target="_blank" 新标签打开音乐页面 -->
-    <a href="https://y.qq.com/n/ryqq_v2/songDetail/002E3MtF0IAMMY" target="_blank" rel="noopener noreferrer">
-        <img src="./img/yyuelo.png" style="width:50px;height:50px;border-radius:50px;object-fit:cover;margin:0 auto;display:block;">
-    </a>
-    <p class="music-tips">点击唱片跳转QQ音乐</p>
-</div>
+
+          <!-- 背景音乐 图片图标按钮 -->
+ <div style="margin-top:24px;">
+   <audio id="bgAudio" loop>
+     <source src="./img/bg.mp3" type="audio/mpeg">
+   
+   <!-- 音乐图标按钮 -->
+   <img id="musicIcon" 
+        src="./img/yyuelo.png" 
+        style="width:48px;cursor:pointer;">
+ </div>
+ <script>
+ const audio = document.getElementById("bgAudio");
+ const icon = document.getElementById("musicIcon");
+ icon.onclick = function () {
+   if (audio.paused) {
+     audio.play();
+     // 播放状态，切换播放图标
+     icon.src = "./img/yyue2.png";
+   } else {
+     audio.pause();
+     // 暂停状态，切换关闭图标
+     icon.src = "./img/yyuelo.png";
+   }
+ };
+ </script>
+            
         </div>
     </div>
     <!-- 一级主导航 -->
