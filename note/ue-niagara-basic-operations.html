@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh‑CN">
+<head>
+    <meta charset="UTF‑8">
+    <!-- 适配电脑端为主 -->
+    <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+    <title>UE5特效学习笔记｜Niagara水珠HLSL材质</title>
+    <style>
+        /* 全局样式 深色作品集统一风格，和首页色调保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border‑box;
+        }
+        body {
+            background: #18181d;
+            color: #f0f0f0;
+            font‑family: "Microsoft YaHei", sans‑serif;
+            line‑height: 1.75;
+            padding: 40px 24px;
+            max‑width: 1100px;
+            margin: 0 auto;
+        }
+        /* 返回首页按钮 */
+        .back‑home {
+            display: inline‑block;
+            padding: 8px 18px;
+            background: rgba(65, 115, 255, 0.22);
+            color: #7fb0ff;
+            text‑decoration: none;
+            border‑radius: 6px;
+            margin‑bottom: 32px;
+            transition: 0.2s;
+        }
+        .back‑home:hover {
+            background: rgba(65, 115, 255, 0.35);
+        }
+        /* 笔记大标题 */
+        .note‑title {
+            font‑size: 28px;
+            margin‑bottom: 12px;
+            font‑weight: 600;
+        }
+        /* 发布日期 */
+        .note‑time {
+            color: #aaaaaa;
+            font‑size: 15px;
+            margin‑bottom: 30px;
+        }
+        /* 正文段落 */
+        .note‑content p {
+            margin‑bottom: 18px;
+            font‑size: 16px;
+            color: #e2e2e2;
+        }
+        /* 笔记内多张图片样式，自动适配宽度、居中 */
+        .note‑img {
+            width: 100%;
+            max‑width: 820px;
+            display: block;
+            margin: 22px auto;
+            border‑radius: 8px;
+            /* 图片柔和阴影 */
+            box‑shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+        /* 外链超链接样式 */
+        .note‑link {
+            color: #63a8ff;
+            text‑decoration: none;
+            word‑break: break‑all;
+        }
+        .note‑link:hover {
+            text‑decoration: underline;
+        }
+        /* 表格样式，适配深色主题 */
+        .note‑table {
+            width: 100%;
+            border‑collapse: collapse;
+            margin: 24px 0;
+        }
+        .note‑table th,
+        .note‑table td {
+            border: 1px solid #333640;
+            padding: 12px 16px;
+        }
+        .note‑table th {
+            background: #272830;
+        }
+        /* 小标题 h2 */
+        .note‑h2 {
+            font‑size: 22px;
+            margin: 36px 0 16px;
+            border‑left: 4px solid #4173ff;
+            padding‑left: 12px;
+        }
+        /* HLSL代码块样式 */
+        .code‑block {
+            background: #222329;
+            padding: 20px;
+            border‑radius: 8px;
+            overflow‑x: auto;
+            margin: 20px 0;
+            color: #cdd7e3;
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回首页，路径根据你的首页文件名填写，一般是 index.html -->
+    <a href="../index.html" class="back‑home">← 返回作品集首页</a>
+
+    <!-- 笔记标题 -->
+    <h1 class="note‑title">UE5特效学习笔记｜Niagara水珠HLSL材质</h1>
+    <!-- 笔记日期 -->
+    <div class="note‑time">发布日期：2026‑08‑10</div>
+
+    <!-- 笔记正文容器 -->
+    <div class="note‑content">
+        <p>本篇梳理 Niagara 粒子系统、Custom 节点手写 HLSL 材质，对比 UE4、UE5 语法差异，讲解循环 for、if 分支写法，实现玻璃窗雨水流淌着色器算法。</p>
+
+        <h2 class="note‑h2">一、效果预览截图（可放多张图片）</h2>
+        <!-- 第一张效果图，路径对应你仓库图片位置 -->
+        <img src="../img/note/water_preview.png" class="note‑img" alt="玻璃窗水珠流淌材质效果图">
+        <!-- 第二张效果图，继续复制该行即可新增图片 -->
+        <img src="../img/note/hlsl_code_screenshot.png" class="note‑img" alt="HLSL代码截图">
+
+        <h2 class="note‑h2">二、UE4 与 UE5 HLSL 语法差异对照表</h2>
+        <!-- 表格示例 -->
+        <table class="note‑table">
+            <thead>
+                <tr>
+                    <th>功能</th>
+                    <th>UE4 HLSL</th>
+                    <th>UE5 HLSL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>贴图采样写法</td>
+                    <td>Texture2DSample(贴图,UV)</td>
+                    <td>需要补充采样器参数</td>
+                </tr>
+                <tr>
+                    <td>for循环限制</td>
+                    <td>不能用动态变量做循环边界</td>
+                    <td>宽松一些，但依旧推荐常量循环</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 class="note‑h2">三、完整水珠流动 HLSL 源码</h2>
+        <pre class="code‑block">
+// 玻璃雨滴流动HLSL，附带变量注释
+float2 uv = UV;
+// 竖直向下偏移，模拟水珠往下滑落
+uv.y += Time * FlowSpeed;
+// 微小随机扰动，水珠不会规整平行流动
+uv += RandomValue * Disturb;
+float finalColor = Texture2DSample(RainTex,uv);
+return finalColor;
+        </pre>
+
+        <h2 class="note‑h2">四、参考外链地址</h2>
+        <p>着色器算法参考文档：
+            <a href="shturl.cc/0MdRE4tt0" target="_blank" class="note‑link">shturl.cc/0MdRE4tt0</a>
+        </p>
+        <p>Niagara 官方文档地址：
+            <a href="https://docs.unrealengine.com" target="_blank" class="note‑link">https://docs.unrealengine.com</a>
+        </p>
+    </div>
+
+</body>
+</html>
