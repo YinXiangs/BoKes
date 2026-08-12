@@ -10,15 +10,24 @@
             padding: 0;
             box-sizing: border-box;
         }
-        body {
-            background: #0f0f0f;
-            color: #f0f0f0;
-            font-family: system-ui, sans-serif;
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 42px 30px;
-            line-height: 1.75;
-        }
+       body {
+  background-image: url("./img/beijintu.JPG");
+  /* 黑色半透明遮罩盖在背景图上，0.6是遮罩透明度 */
+  background-color: rgba(0,0,0,0.6);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+    color: #f0f0f0;
+    font-family: system-ui, sans-serif;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 42px 30px;
+    line-height: 1.75;
+}
         /* 侧边个人信息区域 可修改昵称、头像、简介 */
         .blog-sidebar {
             display: grid;
