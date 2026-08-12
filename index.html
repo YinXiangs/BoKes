@@ -242,31 +242,30 @@
                 收藏着生活细碎风物，以随笔与镜头留存世间温柔光景。
             </p>
 
-          <!-- 背景音乐 图片图标按钮 -->
- <div style="margin-top:24px;">
-   <audio id="bgAudio" loop>
-     <source src="./img/bg.mp3" type="audio/mpeg">
-   
- <!-- 音乐图标区域 -->
- <div class="music-disc">
-   <img id="musicIcon" src="./img/yyuelo.png" style="width:48px;">
- </div>
- <div class="music-tips">点击播放背景音乐</div>
- <audio id="bgAudio" loop>
-   <source src="./img/bg.mp3" type="audio/mpeg">
- <script>
- const audio = document.getElementById("bgAudio");
- const icon = document.getElementById("musicIcon");
- icon.onclick = function () {
-   if (audio.paused) {
-     audio.play();
-     icon.src = "./img/yyue2.png";
-   } else {
-     audio.pause();
-     icon.src = "./img/yyuelo.png";
-   }
- };
- </script>
+          <!-- 音乐图标区域 -->
+<div class="music-disc">
+  <img id="musicIcon" src="./img/yyuelo.png" style="width:48px;">
+</div>
+<div class="music-tips">点击播放背景音乐</div>
+
+<audio id="bgAudio" loop>
+  <source src="./img/bg.mp3" type="audio/mpeg">
+
+
+<script>
+const audio = document.getElementById("bgAudio");
+const icon = document.getElementById("musicIcon");
+icon.onclick = function () {
+  if (audio.paused) {
+    audio.play();
+    icon.src = "./img/yyue2.png";
+  } else {
+    audio.pause();
+    icon.src = "./img/yyuelo.png";
+  }
+};
+</script>
+
             
         </div>
     </div>
