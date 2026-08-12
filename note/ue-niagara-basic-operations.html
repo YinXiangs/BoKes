@@ -117,14 +117,18 @@
     <div class="note‑content">
         <p>本篇梳理 Niagara 粒子系统基本内容，在熟悉UE引擎的基础上步入Niagara特效设计的学习</p>
 
+        <p>Niagara粒子系统打破了旧系统Cascade的限制，让美术师能全权掌控效果逻辑，可以通过组合“模块”像搭积木一样定义粒子行为，甚至用HLSL编写代码创造独一无二的模块。同时也打破了数据孤岛，粒子可与场景、蓝图、外部数据实时交互，让特效真正“活”起来。</p>
         <h2 class="note‑h2">一、效果预览截图</h2>
         <!-- 第一张效果图，路径对应你仓库图片位置 -->
-        <img src="../img/note/imgs/niagara_1/niagara.png" class="note‑img" alt="Niagara界面图">
-        <p>Niagara粒子系统打破了旧系统Cascade的限制，让美术师能全权掌控效果逻辑，可以通过组合“模块”像搭积木一样定义粒子行为，甚至用HLSL编写代码创造独一无二的模块。同时也打破了数据孤岛，粒子可与场景、蓝图、外部数据实时交互，让特效真正“活”起来。</p>
+        <img src="../note/imgs/niagara_1/niagara.png" class="note‑img" alt="Niagara界面图">
+        <p>新建Niagara系统，单个发射器分有：发射器生成、发射器更新、粒子生成、粒子更新、渲染
+        为了控制发射器本身Emitter Stater需换为Self模式，若Emitter State为System，则发射器受系统更新影响
+        </p>
         <!-- 第二张效果图，继续复制该行即可新增图片 -->
-        <img src="../img/note/imgs/niagara_1/guonu.png" class="note‑img" alt="HLSL代码截图">
-
-        <h2 class="note‑h2">二、UE4 与 UE5 HLSL 语法差异对照表</h2>
+        <img src="../note/imgs/niagara_1/guonu.png" class="note‑img" alt="HLSL代码截图">
+        <p>在Niagara中的每个参数都可以对其设置过滤，以来保证粒子特效的丝滑程度，如Random，Curve等常用功能
+        </p>
+        <h2 class="note‑h2">二、Niagara必掌握</h2>
         <!-- 表格示例 -->
         <table class="note‑table">
             <thead>
@@ -157,24 +161,22 @@
             </tbody>
         </table>
 
-        <h2 class="note‑h2">三、完整水珠流动 HLSL 源码</h2>
+        <h2 class="note‑h2">三、事件处理</h2>
         <pre class="code‑block">
-// 玻璃雨滴流动HLSL，附带变量注释
-float2 uv = UV;
-// 竖直向下偏移，模拟水珠往下滑落
-uv.y += Time * FlowSpeed;
-// 微小随机扰动，水珠不会规整平行流动
-uv += RandomValue * Disturb;
-float finalColor = Texture2DSample(RainTex,uv);
-return finalColor;
+// +阶段 中获取 事件处理器
+Niagara事件处理器可用HLSL来进行控制，也可以用UE只带蓝图，需了解粒子运转逻辑
+//什么情况采用 事件处理器
+需两个发射器之间或事件之间有因果关系，如碰撞，触发......
+//什么情况写HLSL（自定义脚本）
+当内置模块无法满足需求，或极度追求GPU性能极限时，HLSL是在GPU上直接运行的代码
+//绝对别用HLSL的情况
+1.纯粹的位移，旋转，缩放，内置能搞定的
+2.团队协作项目，除非是技术TA美术，否则后续维护成本及高
         </pre>
 
-        <h2 class="note‑h2">四、参考外链地址</h2>
-        <p>着色器算法参考文档：
-            <a href="shturl.cc/0MdRE4tt0" target="_blank" class="note‑link">shturl.cc/0MdRE4tt0</a>
-        </p>
-        <p>Niagara 官方文档地址：
-            <a href="https://docs.unrealengine.com" target="_blank" class="note‑link">https://docs.unrealengine.com</a>
+        <h2 class="note‑h2">四、学习地址</h2>
+        <p>Niagara基本操作：
+            <a href="https://www.youtube.com/watch?v=04k9JDx-KTM&list=PLUi8nuTUEtTshYxpmR7brPE3tV7JsO0VP" target="_blank" class="note‑link"https://www.youtube.com/watch/a>
         </p>
     </div>
 
