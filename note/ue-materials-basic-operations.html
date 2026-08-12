@@ -1,1 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh‑CN">
+<head>
+    <meta charset="UTF‑8">
+    <!-- 适配电脑端为主 -->
+    <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+    <title>UE5材质学习笔记｜Materials基本操作</title>
+    <style>
+        /* 全局样式 深色作品集统一风格，和首页色调保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border‑box;
+        }
+        body {
+            background: #18181d;
+            color: #f0f0f0;
+            font‑family: "Microsoft YaHei", sans‑serif;
+            line‑height: 1.75;
+            padding: 40px 24px;
+            max‑width: 1100px;
+            margin: 0 auto;
+        }
+        /* 返回首页按钮 */
+        .back‑home {
+            display: inline‑block;
+            padding: 8px 18px;
+            background: rgba(65, 115, 255, 0.22);
+            color: #7fb0ff;
+            text‑decoration: none;
+            border‑radius: 6px;
+            margin‑bottom: 32px;
+            transition: 0.2s;
+        }
+        .back‑home:hover {
+            background: rgba(65, 115, 255, 0.35);
+        }
+        /* 笔记大标题 */
+        .note‑title {
+            font‑size: 28px;
+            margin‑bottom: 12px;
+            font‑weight: 600;
+        }
+        /* 发布日期 */
+        .note‑time {
+            color: #aaaaaa;
+            font‑size: 15px;
+            margin‑bottom: 30px;
+        }
+        /* 正文段落 */
+        .note‑content p {
+            margin‑bottom: 18px;
+            font‑size: 16px;
+            color: #e2e2e2;
+        }
+        /* 笔记内多张图片样式，自动适配宽度、居中 */
+        .note‑img {
+            width: 100%;
+            max‑width: 820px;
+            display: block;
+            margin: 22px auto;
+            border‑radius: 8px;
+            /* 图片柔和阴影 */
+            box‑shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+        /* 外链超链接样式 */
+        .note‑link {
+            color: #63a8ff;
+            text‑decoration: none;
+            word‑break: break‑all;
+        }
+        .note‑link:hover {
+            text‑decoration: underline;
+        }
+        /* 表格样式，适配深色主题 */
+        .note‑table {
+            width: 100%;
+            border‑collapse: collapse;
+            margin: 24px 0;
+        }
+        .note‑table th,
+        .note‑table td {
+            border: 1px solid #333640;
+            padding: 12px 16px;
+        }
+        .note‑table th {
+            background: #272830;
+        }
+        /* 小标题 h2 */
+        .note‑h2 {
+            font‑size: 22px;
+            margin: 36px 0 16px;
+            border‑left: 4px solid #4173ff;
+            padding‑left: 12px;
+        }
+        /* HLSL代码块样式 */
+        .code‑block {
+            background: #222329;
+            padding: 20px;
+            border‑radius: 8px;
+            overflow‑x: auto;
+            margin: 20px 0;
+            color: #cdd7e3;
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回首页，路径根据你的首页文件名填写，一般是 index.html -->
+    <a href="../index.html" class="back‑home">← 返回作品集首页</a>
 
+    <!-- 笔记标题 -->
+    <h1 class="note‑title">UE5材质学习笔记｜Materials基本操作</h1>
+    <!-- 笔记日期 -->
+    <div class="note‑time">发布日期：2025‑12‑10</div>
+
+    <!-- 笔记正文容器 -->
+    <div class="note‑content">
+        <p>本篇梳理 Niagara 粒子系统基本内容，在熟悉UE引擎的基础上步入Niagara特效设计的学习</p>
+
+        <p>Niagara粒子系统打破了旧系统Cascade的限制，让美术师能全权掌控效果逻辑，可以通过组合“模块”像搭积木一样定义粒子行为，甚至用HLSL编写代码创造独一无二的模块。同时也打破了数据孤岛，粒子可与场景、蓝图、外部数据实时交互，让特效真正“活”起来。</p>
+        <h2 class="note‑h2">一、效果预览截图</h2>
+        <!-- 第一张效果图，路径对应你仓库图片位置 -->
+        <img src="../note/imgs/niagara_1/niagara.png" class="note‑img" alt="Niagara界面图"style="width:40%;
+            display:block;margin-left:0">
+        <p>新建Niagara系统，单个发射器分有：发射器生成、发射器更新、粒子生成、粒子更新、渲染
+        为了控制发射器本身Emitter Stater需换为Self模式，若Emitter State为System，则发射器受系统更新影响
+        </p>
+        <!-- 第二张效果图，继续复制该行即可新增图片 -->
+        <img src="../note/imgs/niagara_1/guonu.png" class="note‑img" alt="HLSL代码截图"style="width:40%;
+            display:block;margin-left:0">
+        <p>在Niagara中的每个参数都可以对其设置过滤，以来保证粒子特效的丝滑程度，如Random，Curve等常用功能
+        </p>
+        <h2 class="note‑h2">二、Niagara必掌握</h2>
+        <!-- 表格示例 -->
+        <table class="note‑table">
+            <thead>
+                <tr>
+                    <th>板块</th>
+                    <th>具备内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>发射器更新</td>
+                    <td>Spawn Rate，Spawn Bust Instantaneous</td>
+                </tr>
+                <tr>
+                    <td>粒子生成</td>
+                    <td>Shape Location，Add Velocity，Intial Mash Orientation，Sprite Facing and Alignment</td>
+                    
+                </tr>
+                <tr>
+                    <td>粒子更新</td>
+                    <td>Size，Kill，Force，Color，Point，Dray，Collision，Gravity,Dynamic</td>
+                    
+                </tr>
+                <tr>
+                    <td>粒子渲染</td>
+                    <td>Sprite渲染，网格体渲染，条带渲染</td>
+                    
+                </tr>
+                
+            </tbody>
+        </table>
+
+        <h2 class="note‑h2">三、事件处理</h2>
+        <pre class="code‑block">
+// +阶段 中获取 事件处理器
+Niagara事件处理器可用HLSL来进行控制，也可以用UE只带蓝图，需了解粒子运转逻辑
+//什么情况采用 事件处理器
+需两个发射器之间或事件之间有因果关系，如碰撞，触发......
+//什么情况写HLSL（自定义脚本）
+当内置模块无法满足需求，或极度追求GPU性能极限时，HLSL是在GPU上直接运行的代码
+//绝对别用HLSL的情况
+1.纯粹的位移，旋转，缩放，内置能搞定的
+2.团队协作项目，除非是技术TA美术，否则后续维护成本及高
+        </pre>
+
+        <h2 class="note‑h2">四、学习地址</h2>
+        <p>Niagara基本操作：
+            <a href="https://www.youtube.com/watch?v=04k9JDx-KTM&list=PLUi8nuTUEtTshYxpmR7brPE3tV7JsO0VP" target="_blank" class="note‑link">YuTube-Niagara基础教学</a>
+        </p>
+        
+    </div>
+
+</body>
+</html>
