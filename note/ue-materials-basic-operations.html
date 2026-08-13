@@ -109,76 +109,98 @@
     <a href="../index.html" class="back‑home">← 返回作品集首页</a>
 
     <!-- 笔记标题 -->
-    <h1 class="note‑title">UE5材质学习笔记｜Materials基本操作</h1>
+    <h1 class="note‑title">UE5材质学习笔记｜Materials基本概念</h1>
     <!-- 笔记日期 -->
     <div class="note‑time">发布日期：2025‑12‑10</div>
 
     <!-- 笔记正文容器 -->
     <div class="note‑content">
-        <p>本篇梳理 Niagara 粒子系统基本内容，在熟悉UE引擎的基础上步入Niagara特效设计的学习</p>
+        <p>本篇是在刚接触虚幻引擎材质系统而进行学习笔记</p>
 
-        <p>Niagara粒子系统打破了旧系统Cascade的限制，让美术师能全权掌控效果逻辑，可以通过组合“模块”像搭积木一样定义粒子行为，甚至用HLSL编写代码创造独一无二的模块。同时也打破了数据孤岛，粒子可与场景、蓝图、外部数据实时交互，让特效真正“活”起来。</p>
-        <h2 class="note‑h2">一、效果预览截图</h2>
-        <!-- 第一张效果图，路径对应你仓库图片位置 -->
-        <img src="../note/imgs/niagara_1/niagara.png" class="note‑img" alt="Niagara界面图"style="width:40%;
-            display:block;margin-left:0">
-        <p>新建Niagara系统，单个发射器分有：发射器生成、发射器更新、粒子生成、粒子更新、渲染
-        为了控制发射器本身Emitter Stater需换为Self模式，若Emitter State为System，则发射器受系统更新影响
+        <p>UE中的材质（Materials）定义了场景中对象的表面属性，可以将它理解为涂在网格体上用来控制其视觉外观的“涂料”。
+           在渲染管线中，
+           着色器是对应每个顶点或像素应该如何渲染的程序。虚幻引擎中的着色器代码转换为GPU硬件可以执行的一系列指令，最终像素颜色就这样输出到了显示。</p>
+
+        <h2 class="note‑h2">创建材质</h2>
+        <p>在内容浏览器中右键新建Material材质，并为其改上规范名称，双击材质进入编辑。
         </p>
+        <!-- 第一张效果图，路径对应你仓库图片位置 -->
+        <img src="../note/imgs/Material_1/juetu1.png" class="note‑img" alt="主材质编辑"style="width:40%;
+            display:block;margin-left:0">
+        <p>进入材质编辑器会看到主材质节点（Main Material Node）后，点击它可在细节面板（Details panel）里进行对它的自身编辑，所有节点都会是可以在细节面板中对自身进行编辑。 </p>
+        <p>在做特效材质时，主材质（Main Material Node）的材质域（Material Domain）、混合模式（Blend Mode）、着色模型（Shading Model），这些属性决定了材质输入口，以来决定特效风格，性能消耗等。 </p>
+
+         <h2 class="note‑h2">材质节点</h2>
+         <p>每个材质节点都执行自身的工作，它们只是HLSL代码片段的视觉效果呈现。简单的表面可能只需几个材质节点定义材质，如大多PBR预先建模师已绘制好模型贴图 </p>
+        
+        <h2 class="note‑h2">浮点值</h2>
+         <p>在材质节点中有RGBA四维参数，通常由“0~1”来赋予其值，维度越小，所依赖的等价值越大，色彩上色相由H来定，饱和度由S来定，亮度由V来定，不透明度由A定，RGB为定值项，若RGB=0;HSV=0;而在数值相取的情况下，可对其进行覆盖（相乘）。
+         </p>
         <!-- 第二张效果图，继续复制该行即可新增图片 -->
-        <img src="../note/imgs/niagara_1/guonu.png" class="note‑img" alt="HLSL代码截图"style="width:40%;
+        <img src="../note/imgs/Material_1/juetu2.png" class="note‑img" alt="浮点"style="width:40%;
             display:block;margin-left:0">
         <p>在Niagara中的每个参数都可以对其设置过滤，以来保证粒子特效的丝滑程度，如Random，Curve等常用功能
         </p>
-        <h2 class="note‑h2">二、Niagara必掌握</h2>
+
+         <h2 class="note‑h2">变量</h2>
+         <p>在一些情况下，节点可能会包含着变量，可以在材质表达式中引用其他地方的数据。</p>
+
+        <h2 class="note‑h2">材质实例</h2>
+         <p>材质实例可以从单个母材质快速创建多个变体或实例。</p>
+        <!-- 第三张效果图，继续复制该行即可新增图片 -->
+        <img src="../note/imgs/Material_1/juetu3.png" class="note‑img" alt="材质实例"style="width:40%;
+            display:block;margin-left:0">
+        <p>使用实例有几个优点：
+            ·可以自定义材质实例，无需重新编译母材质。
+            ·可以在材质实例编辑器中向美术师展示参数。意味着他们可以快速直观地创建材质变体，无需编辑更复杂的节点图表。
+        </p>
+        
+        <h2 class="note‑h2">颜色计算</h2>
+        <p>浮点是一种存储单一数值的变量，可以是正数也可以是负数，浮点（Float）是浮点数（Floating-point）简称，表示该数字包含一个小数，不是整数（Int）。</p>
+         <p>浮点在做母材质时，需规范使用与命名，以便于后续美术师进行调整参数（Param）</p>
         <!-- 表格示例 -->
         <table class="note‑table">
             <thead>
                 <tr>
-                    <th>板块</th>
-                    <th>具备内容</th>
+                    <th>数据类型</th>
+                    <th>定义</th>
+                    <th>示例</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>发射器更新</td>
-                    <td>Spawn Rate，Spawn Bust Instantaneous</td>
+                    <th>数据类型</th>
+                    <th>定义</th>
+                    <th>示例</th>
+                </tr>
+              <tr>
+                    <th>浮点（Float）</th>
+                    <th>储存一个浮点值</th>
+                    <th>（1.0）</th>
+                </tr>
+                  <tr>
+                    <th>浮点2（Float2）</th>
+                    <th>储存两个浮点值</th>
+                    <th>（1.5，2.0）</th>
                 </tr>
                 <tr>
-                    <td>粒子生成</td>
-                    <td>Shape Location，Add Velocity，Intial Mash Orientation，Sprite Facing and Alignment</td>
-                    
+                    <th>浮点3（Float3）</th>
+                    <th>储存三个浮点值</th>
+                    <th>（0.0，1.0，3.5）</th>
                 </tr>
                 <tr>
-                    <td>粒子更新</td>
-                    <td>Size，Kill，Force，Color，Point，Dray，Collision，Gravity,Dynamic</td>
-                    
-                </tr>
-                <tr>
-                    <td>粒子渲染</td>
-                    <td>Sprite渲染，网格体渲染，条带渲染</td>
-                    
+                    <th>浮点4（Float4）</th>
+                    <th>储存四个浮点值</th>
+                    <th>（0.5，1.0，0.2，0.9）</th>
                 </tr>
                 
             </tbody>
         </table>
-
-        <h2 class="note‑h2">三、事件处理</h2>
-        <pre class="code‑block">
-// +阶段 中获取 事件处理器
-Niagara事件处理器可用HLSL来进行控制，也可以用UE只带蓝图，需了解粒子运转逻辑
-//什么情况采用 事件处理器
-需两个发射器之间或事件之间有因果关系，如碰撞，触发......
-//什么情况写HLSL（自定义脚本）
-当内置模块无法满足需求，或极度追求GPU性能极限时，HLSL是在GPU上直接运行的代码
-//绝对别用HLSL的情况
-1.纯粹的位移，旋转，缩放，内置能搞定的
-2.团队协作项目，除非是技术TA美术，否则后续维护成本及高
-        </pre>
+        
 
         <h2 class="note‑h2">四、学习地址</h2>
-        <p>Niagara基本操作：
-            <a href="https://www.youtube.com/watch?v=04k9JDx-KTM&list=PLUi8nuTUEtTshYxpmR7brPE3tV7JsO0VP" target="_blank" class="note‑link">YuTube-Niagara基础教学</a>
+        <p>官方学习文档：
+            <a href="https://dev.epicgames.com/documentation/unreal-engine/material-parameter-expressions-in-unreal-engine#%E5%90%91%E9%87%8F%E5%8F%82%E6%95%B0" target="_blank" class="note‑link">Epic官方教学文档</a>
         </p>
         
     </div>
