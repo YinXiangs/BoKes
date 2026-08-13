@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh‑CN">
+<head>
+    <meta charset="UTF‑8">
+    <!-- 适配电脑端为主 -->
+    <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+    <title>UE5材质学习笔记｜Materials基本操作</title>
+    <style>
+        /* 全局样式 深色作品集统一风格，和首页色调保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border‑box;
+        }
+        body {
+            background: #18181d;
+            color: #f0f0f0;
+            font‑family: "Microsoft YaHei", sans‑serif;
+            line‑height: 1.75;
+            padding: 40px 24px;
+            max‑width: 1100px;
+            margin: 0 auto;
+        }
+        /* 返回首页按钮 */
+        .back‑home {
+            display: inline‑block;
+            padding: 8px 18px;
+            background: rgba(65, 115, 255, 0.22);
+            color: #7fb0ff;
+            text‑decoration: none;
+            border‑radius: 6px;
+            margin‑bottom: 32px;
+            transition: 0.2s;
+        }
+        .back‑home:hover {
+            background: rgba(65, 115, 255, 0.35);
+        }
+        /* 笔记大标题 */
+        .note‑title {
+            font‑size: 28px;
+            margin‑bottom: 12px;
+            font‑weight: 600;
+        }
+        /* 发布日期 */
+        .note‑time {
+            color: #aaaaaa;
+            font‑size: 15px;
+            margin‑bottom: 30px;
+        }
+        /* 正文段落 */
+        .note‑content p {
+            margin‑bottom: 18px;
+            font‑size: 16px;
+            color: #e2e2e2;
+        }
+        /* 笔记内多张图片样式，自动适配宽度、居中 */
+        .note‑img {
+            width: 100%;
+            max‑width: 820px;
+            display: block;
+            margin: 22px auto;
+            border‑radius: 8px;
+            /* 图片柔和阴影 */
+            box‑shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+        /* 外链超链接样式 */
+        .note‑link {
+            color: #63a8ff;
+            text‑decoration: none;
+            word‑break: break‑all;
+        }
+        .note‑link:hover {
+            text‑decoration: underline;
+        }
+        /* 表格样式，适配深色主题 */
+        .note‑table {
+            width: 100%;
+            border‑collapse: collapse;
+            margin: 24px 0;
+        }
+        .note‑table th,
+        .note‑table td {
+            border: 1px solid #333640;
+            padding: 12px 16px;
+        }
+        .note‑table th {
+            background: #272830;
+        }
+        /* 小标题 h2 */
+        .note‑h2 {
+            font‑size: 22px;
+            margin: 36px 0 16px;
+            border‑left: 4px solid #4173ff;
+            padding‑left: 12px;
+        }
+        /* HLSL代码块样式 */
+        .code‑block {
+            background: #222329;
+            padding: 20px;
+            border‑radius: 8px;
+            overflow‑x: auto;
+            margin: 20px 0;
+            color: #cdd7e3;
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回首页，路径根据你的首页文件名填写，一般是 index.html -->
+    <a href="../index.html" class="back‑home">← 返回作品集首页</a>
+
+    <!-- 笔记标题 -->
+    <h1 class="note‑title">UE5材质学习笔记｜Materials基本概念</h1>
+    <!-- 笔记日期 -->
+    <div class="note‑time">发布日期：2025‑12‑10</div>
+
+    <!-- 笔记正文容器 -->
+    <div class="note‑content">
+        <p>本篇是在刚接触虚幻引擎材质系统而进行学习笔记</p>
+
+        <p>UE中的材质（Materials）定义了场景中对象的表面属性，可以将它理解为涂在网格体上用来控制其视觉外观的“涂料”。</p>
+        <p>在渲染管线中，</p>
+        <p>着色器是对应每个顶点或像素应该如何渲染的程序。虚幻引擎中的着色器代码转换为GPU硬件可以执行的一系列指令，最终像素颜色就这样输出到了显示。</p>
+
+        <h2 class="note‑h2">创建材质</h2>
+        <p>在内容浏览器中右键新建Material材质，并为其改上规范名称，双击材质进入编辑。
+        </p>
+        <!-- 第一张效果图，路径对应你仓库图片位置 -->
+        <img src="../note/imgs/materials_1/juetu1.png" class="note‑img" alt="主材质编辑"style="width:40%;
+            display:block;margin-left:0">
+        <p>进入材质编辑器会看到主材质节点（Main Material Node）后，点击它可在细节面板（Details panel）里进行对它的自身编辑，所有节点都会是可以在细节面板中对自身进行编辑。 </p>
+        <p>在做特效材质时，主材质（Main Material Node）的材质域（Material Domain）、混合模式（Blend Mode）、着色模型（Shading Model），这些属性决定了材质输入口，以来决定特效风格，性能消耗等。 </p>
+
+         <h2 class="note‑h2">材质节点</h2>
+         <p>每个材质节点都执行自身的工作，它们只是HLSL代码片段的视觉效果呈现。简单的表面可能只需几个材质节点定义材质，如大多PBR预先建模师已绘制好模型贴图 </p>
+        
+        <h2 class="note‑h2">浮点值</h2>
+         <p>在材质节点中有RGBA四维参数，通常由“0~1”来赋予其值，维度越小，所依赖的等价值越大，色彩上色相由H来定，饱和度由S来定，亮度由V来定，不透明度由A定，RGB为定值项，若RGB=0;HSV=0;而在数值相取的情况下，可对其进行覆盖（相乘）。
+         </p>
+        <!-- 第二张效果图，继续复制该行即可新增图片 -->
+        <img src="../note/imgs/materials_1/juetu2.png" class="note‑img" alt="浮点"style="width:40%;
+            display:block;margin-left:0">
+        <p>在Niagara中的每个参数都可以对其设置过滤，以来保证粒子特效的丝滑程度，如Random，Curve等常用功能
+        </p>
+
+         <h2 class="note‑h2">变量</h2>
+         <p>在一些情况下，节点可能会包含着变量，可以在材质表达式中引用其他地方的数据。</p>
+
+        <h2 class="note‑h2">材质实例</h2>
+         <p>材质实例可以从单个母材质快速创建多个变体或实例。</p>
+        <!-- 第三张效果图，继续复制该行即可新增图片 -->
+        <img src="../note/imgs/materials_1/juetu3.png" class="note‑img" alt="材质实例"style="width:40%;
+            display:block;margin-left:0">
+        <p>使用实例有几个优点： </p>
+           <p> ·可以自定义材质实例，无需重新编译母材质。 </p>
+           <p> ·可以在材质实例编辑器中向美术师展示参数。意味着他们可以快速直观地创建材质变体，无需编辑更复杂的节点图表。
+        </p>
+        
+        <h2 class="note‑h2">颜色计算</h2>
+        <p>浮点是一种存储单一数值的变量，可以是正数也可以是负数，浮点（Float）是浮点数（Floating-point）简称，表示该数字包含一个小数，不是整数（Int）。</p>
+         <p>浮点在做母材质时，需规范使用与命名，以便于后续美术师进行调整参数（Param）</p>
+        <!-- 表格示例 -->
+        <table class="note‑table">
+            <thead>
+                <tr>
+                    <th>数据类型</th>
+                    <th>定义</th>
+                    <th>示例</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+              <tr>
+                    <th>浮点（Float）</th>
+                    <th>储存一个浮点值</th>
+                    <th>（1.0）</th>
+                </tr>
+                  <tr>
+                    <th>浮点2（Float2）</th>
+                    <th>储存两个浮点值</th>
+                    <th>（1.5，2.0）</th>
+                </tr>
+                <tr>
+                    <th>浮点3（Float3）</th>
+                    <th>储存三个浮点值</th>
+                    <th>（0.0，1.0，3.5）</th>
+                </tr>
+                <tr>
+                    <th>浮点4（Float4）</th>
+                    <th>储存四个浮点值</th>
+                    <th>（0.5，1.0，0.2，0.9）</th>
+                </tr>
+                
+            </tbody>
+        </table>
+        
+
+        <h2 class="note‑h2">四、学习地址</h2>
+        <p>官方学习文档：
+            <a href="https://dev.epicgames.com/documentation/unreal-engine/material-parameter-expressions-in-unreal-engine#%E5%90%91%E9%87%8F%E5%8F%82%E6%95%B0" target="_blank" class="note‑link">Epic官方教学文档</a>
+        </p>
+        
+    </div>
+
+</body>
+</html>
