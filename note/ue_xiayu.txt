@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh‑CN">
+<head>
+    <meta charset="UTF‑8">
+    <!-- 适配电脑端为主 -->
+    <meta name="viewport" content="width=device‑width, initial‑scale=1.0">
+    <title>UE5材质学习笔记｜雨天</title>
+    <style>
+        /* 全局样式 深色作品集统一风格，和首页色调保持一致 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border‑box;
+        }
+        body {
+            background: #18181d;
+            color: #f0f0f0;
+            font‑family: "Microsoft YaHei", sans‑serif;
+            line‑height: 1.75;
+            padding: 40px 24px;
+            max‑width: 1100px;
+            margin: 0 auto;
+        }
+        /* 返回首页按钮 */
+        .back‑home {
+            display: inline‑block;
+            padding: 8px 18px;
+            background: rgba(65, 115, 255, 0.22);
+            color: #7fb0ff;
+            text‑decoration: none;
+            border‑radius: 6px;
+            margin‑bottom: 32px;
+            transition: 0.2s;
+        }
+        .back‑home:hover {
+            background: rgba(65, 115, 255, 0.35);
+        }
+        /* 笔记大标题 */
+        .note‑title {
+            font‑size: 28px;
+            margin‑bottom: 12px;
+            font‑weight: 600;
+        }
+        /* 发布日期 */
+        .note‑time {
+            color: #aaaaaa;
+            font‑size: 15px;
+            margin‑bottom: 30px;
+        }
+        /* 正文段落 */
+        .note‑content p {
+            margin‑bottom: 18px;
+            font‑size: 16px;
+            color: #e2e2e2;
+        }
+        /* 笔记内多张图片样式，自动适配宽度、居中 */
+        .note‑img {
+            width: 100%;
+            max‑width: 820px;
+            display: block;
+            margin: 22px auto;
+            border‑radius: 8px;
+            /* 图片柔和阴影 */
+            box‑shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+        /* 外链超链接样式 */
+        .note‑link {
+            color: #63a8ff;
+            text‑decoration: none;
+            word‑break: break‑all;
+        }
+        .note‑link:hover {
+            text‑decoration: underline;
+        }
+        /* 表格样式，适配深色主题 */
+        .note‑table {
+            width: 100%;
+            border‑collapse: collapse;
+            margin: 24px 0;
+        }
+        .note‑table th,
+        .note‑table td {
+            border: 1px solid #333640;
+            padding: 12px 16px;
+        }
+        .note‑table th {
+            background: #272830;
+        }
+        /* 小标题 h2 */
+        .note‑h2 {
+            font‑size: 22px;
+            margin: 36px 0 16px;
+            border‑left: 4px solid #4173ff;
+            padding‑left: 12px;
+        }
+        /* HLSL代码块样式 */
+        .code‑block {
+            background: #222329;
+            padding: 20px;
+            border‑radius: 8px;
+            overflow‑x: auto;
+            margin: 20px 0;
+            color: #cdd7e3;
+        }
+    </style>
+</head>
+<body>
+    <!-- 返回首页，路径根据你的首页文件名填写，一般是 index.html -->
+    <a href="../index.html" class="back‑home">← 返回作品集首页</a>
+
+    <!-- 笔记标题 -->
+    <h1 class="note‑title">UE5材质学习笔记｜雨天</h1>
+    <!-- 笔记日期 -->
+    <div class="note‑time">发布日期：2026‑07‑10</div>
+
+    <!-- 笔记正文容器 -->
+    <div class="note‑content">
+        <p>本篇是在个人进行Demo实践时的学习笔记</p>
+
+        <p>四大板块：下雨雨水、身上雨珠、地面水波纹、水珠镜头。</p>
+        <p>作为一个基础特效师，它们大部分都是通过Shader材质来实现，这在性能上也比全用CPU粒子特效成本低。</p>
+
+        <h2 class="note‑h2">下雨雨水</h2>
+        <p>雨水材质可根据场景需求来适配，主要难点在地面“kill”与碰撞父子生成。
+        </p>
+        <!-- 第一张效果图，路径对应你仓库图片位置 -->
+        <img src="../note/imgs/xiayu/jietu1.png" class="note‑img" alt="Niagara下雨"style="width:40%;
+            display:block;margin-left:0">
+        <p>在Kill Particles中将kill对象替换为“碰撞”（雨珠与地面生成对象的核心事件为“碰撞（collision）”），并为两个发射器添加事件处理器。 </p>
+        <p>事件处理器中备注好“执行模式”与“源”，碰撞事件粒子中，源发射器添加Generate Collition Event，子对象在事件处理器中添加Receive Collition Event。</p>
+
+         <h2 class="note‑h2">身上雨珠</h2>
+         <p>身上雨珠包括角色服装，墙壁屋檐，植物等，主要要用材质来进行制作。</p>
+ <!-- 第二张效果图，路径对应你仓库图片位置 -->
+        <img src="../note/imgs/xiayu/jietu2.png" class="note‑img" alt="身上雨珠材质节点"style="width:40%;
+            display:block;margin-left:0">
+<img src="../note/imgs/xiayu/jietu3.png" class="note‑img" alt="身上雨珠材质节点"style="width:40%;
+            display:block;margin-left:0">
+        
+        <h2 class="note‑h2">水珠镜头</h2>
+         <p>使用竖条的Mask贴图，来约束其他雨滴贴图运动轨迹，连接自发光节点，需区别影视动画与游戏蓝图来使用材质分类。
+         </p>
+        <!-- 第三张效果图，继续复制该行即可新增图片 -->
+        <img src="../note/imgs/xiayu/jietu4.png" class="note‑img" alt="水珠镜头节点"style="width:40%;
+            display:block;margin-left:0">
+        <p>贴图可通过PS绘制或网站上收集。
+        </p>
+
+         <h2 class="note‑h2">地面水波纹</h2>
+         <p>该地面水波纹均为材质节点制作，GPU开销较高，不建议用于游戏开发。</p>
+         <p>UE5.4版本，百度网盘：</p>
+        <h2 class="note‑h2">学习地址</h2>
+        <p>官方学习文档：
+            <a href="https://www.youtube.com/watch?v=rhlV4okjkiA&t=1460s" target="_blank" class="note‑link">Youtube学生网</a>
+        </p>
+        
+    </div>
+
+</body>
+</html>
