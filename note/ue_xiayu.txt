@@ -148,7 +148,7 @@
 
          <h2 class="note‑h2">地面水波纹</h2>
          <p>该地面水波纹均为材质节点制作，GPU开销较高，不建议用于游戏开发。</p>
-         <p>UE5.4版本，百度网盘：</p>
+         <p>UE5.4版本，百度网盘链接: https://pan.baidu.com/s/1b0Ikri-7CJJnSGB70-4RtQ?pwd=c9xe 提取码: c9xe </p>
         <h2 class="note‑h2">学习地址</h2>
         <p>官方学习文档：
             <a href="https://www.youtube.com/watch?v=rhlV4okjkiA&t=1460s" target="_blank" class="note‑link">Youtube学生网</a>
